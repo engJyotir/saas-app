@@ -1,7 +1,6 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Sidebar } from "./sidebar";
 import { Navbar } from "./navbar";
 import { BarChart, Users, DollarSign, ShoppingCart } from "lucide-react";
@@ -44,7 +43,13 @@ export default function Dashboard() {
   );
 }
 
-function DashboardCard({ title, value, icon }) {
+type DashboardCardProps = {
+  title: string;
+  value: string;
+  icon: React.ReactNode;
+};
+
+function DashboardCard({ title, value, icon }: DashboardCardProps) {
   return (
     <Card className="shadow-lg rounded-lg">
       <CardHeader className="flex items-center gap-4">

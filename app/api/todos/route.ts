@@ -6,7 +6,7 @@ import { todo } from "node:test";
 const ITEMS_PER_PAGE = 10;
 
 export async function GET(req: NextRequest){
-    const userId = auth()
+    const {userId} = await auth()
 
     if (!userId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest){
     const page = parseInt (searchParams.get("page") || "1");
     const search = searchParams.get("search") || "" ;
     try {
-        await prisma.todo.findMany({
+        const todos = await prisma.todo.findMany({
             where: {
                 userId,
                 title: {
@@ -57,7 +57,7 @@ export async function GET(req: NextRequest){
 }
 
 export async function POST() {
-    const userId = auth()
+    const {userId} = await auth()
 
     if (!userId) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 400 })
@@ -72,11 +72,11 @@ export async function POST() {
     if (!user) {
         return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
-    if (!user.isSubscribed && user.todos.length >=3 ){
+    if (!user.isSubscribed && user.todos.length >= 3 ){
         return NextResponse.json({
             error: "free users can do only 3"
         },{status: 403})
     }
 
-    await request.JSON
+    
 }

@@ -5,12 +5,13 @@ import prisma from "@/lib/prisma";
 const ITEMS_PER_PAGE = 10;
 
 async function isAdmin(userId: string) {
-  const user = await clerkClient.users.getUser(userId);
+    const user = await clerkClient.users.getUser(userId); 
+
   return user.publicMetadata.role === "admin";
 }
 
 export async function GET(req: NextRequest) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -60,7 +61,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -104,7 +105,7 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const { userId } = auth();
+  const { userId } = await auth();
 
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
