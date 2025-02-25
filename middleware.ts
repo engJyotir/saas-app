@@ -14,10 +14,9 @@ export default clerkMiddleware({
     if (!auth.userId && !publicRoutes.includes(req.nextUrl.pathname)) {
       return NextResponse.redirect(new URL("/sign-in", req.url));
     }
-
     if (auth.userId) {
       try {
-        const user = await clerkClient.users.getUser(auth.userId); // Fetch user data from Clerk
+        const user = (await clerkClient()).users.getUser(auth.userId); // Fetch user data from Clerk
         const role = user.publicMetadata.role as string | undefined;
 
         // Admin role redirection logic

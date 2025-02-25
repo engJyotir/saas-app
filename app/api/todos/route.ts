@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import prisma from "@/lib/prisma";
-import { todo } from "node:test";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -56,7 +55,7 @@ export async function GET(req: NextRequest){
       }
 }
 
-export async function POST() {
+export async function POST(req: NextRequest) {
     const {userId} = await auth()
 
     if (!userId) {
@@ -77,6 +76,13 @@ export async function POST() {
             error: "free users can do only 3"
         },{status: 403})
     }
+
+    const {title} = await req.json();
+    const todo = await prisma.todo.create({
+        data : {title,userId}
+    })
+
+    return NextResponse.json(todo,{status:201})
 
     
 }
